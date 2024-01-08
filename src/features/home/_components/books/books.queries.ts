@@ -1,5 +1,4 @@
-import { createQueryKeyStore } from '@lukemorales/query-key-factory';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 
 interface BookFilters {
   q: string;
@@ -30,15 +29,14 @@ export const getBooksByFilter = ({ q, startIndex, maxResults }: BookFilters): Pr
   ).then((res) => res.json());
 };
 
-export const queryKeys = createQueryKeyStore({
+export const queryKeys = {
   books: {
-    detail: (bookId: string) => [bookId],
-    list: (filters: BookFilters) => ({
-      queryKey: [{ filters }],
-      queryFn: () => getBooksByFilter(filters),
-    }),
+    all: ['books'] as const,
+    lists: () => [...queryKeys.books.all, 'list'] as const,
+    list: ({ q, startIndex, maxResults }: BookFilters) =>
+      [...queryKeys.books.lists(), { q, startIndex, maxResults }] as const,
   },
-});
+};
 
 export const useBooksQuery = (
   {
@@ -55,9 +53,15 @@ export const useBooksQuery = (
     maxResults: 40,
   }
 ) => {
-  if (Math.random() < 0.3) {
-    throw new Error('데이터를 불러오지 못했습니다.');
-  }
-
-  return useSuspenseQuery(queryKeys.books.list({ q, startIndex, maxResults }));
+  return useSuspenseInfiniteQuery({
+    queryKey: queryKeys.books.list({ q, startIndex, maxResults }),
+    queryFn: ({ pageParam = 0 }) =>
+      getBooksByFilter({
+        q,
+        maxResults,
+        startIndex: pageParam,
+      }),
+    initialPageParam: startIndex,
+    getNextPageParam: (_, allPages) => allPages.length * maxResults,
+  });
 };

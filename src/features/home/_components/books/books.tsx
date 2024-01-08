@@ -1,23 +1,36 @@
+import { useInView } from 'react-intersection-observer';
 import { card, container, image, title } from './books.css';
 import { useBooksQuery } from './books.queries';
+import React from 'react';
 
 export default function Books() {
-  const booksQuery = useBooksQuery({
+  const { ref, inView } = useInView();
+
+  const { data, fetchNextPage } = useBooksQuery({
     q: 'react',
     startIndex: 0,
-    maxResults: 10,
+    maxResults: 12,
   });
+
+  React.useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, inView]);
 
   return (
     <div className={container}>
-      {booksQuery.data.items.map((book) => {
-        return (
-          <div className={card} key={book.id}>
-            <img className={image} src={book.volumeInfo.imageLinks.thumbnail} alt={book.volumeInfo.title} />
-            <span className={title}>{book.volumeInfo.title}</span>
-          </div>
-        );
-      })}
+      {data.pages.map((page, index) => (
+        <React.Fragment key={index}>
+          {page.items.map((item) => (
+            <div key={item.id} className={card}>
+              <img className={image} src={item.volumeInfo.imageLinks?.thumbnail} alt={item.volumeInfo.title} />
+              <h2 className={title}>{item.volumeInfo.title}</h2>
+            </div>
+          ))}
+          {index === data.pages.length - 1 && <div ref={ref} />}
+        </React.Fragment>
+      ))}
     </div>
   );
 }
