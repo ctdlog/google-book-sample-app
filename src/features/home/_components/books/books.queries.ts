@@ -55,5 +55,9 @@ export const useBooksQuery = (
     maxResults: 40,
   }
 ) => {
+  if (Math.random() < 0.3) {
+    throw new Error('데이터를 불러오지 못했습니다.');
+  }
+
   return useSuspenseQuery(queryKeys.books.list({ q, startIndex, maxResults }));
 };
