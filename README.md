@@ -8,7 +8,7 @@ The app utilizes the Google Books API to implement the UI found in the Figma Pag
 
 ## Requirements
 
-1. Implement the UI from the Figma Pages Design under 4.3 Home - Vendors and 4.3 Detail Menu. Exclude the title section, and ensure that only one React tab exists.
+1. Implement the UI from the [Figma](<https://www.figma.com/file/GxsiyGhYcXgnbHC4kf9Mni/Bazar---Books-Mobile-App-(Community)?type=design&node-id=1855%3A6688&mode=dev>) Pages Design under 4.3 Home - Vendors and 4.3 Detail Menu. Exclude the title section, and ensure that only one React tab exists.
 2. The initial data loaded through the Google Book API should consist of 12 items, and infinite scrolling must be implemented.
 3. Use TanStack Query, Suspense, Error Boundary, and CSS-in-JS as mandatory dependencies. Other library usage is optional.
 
