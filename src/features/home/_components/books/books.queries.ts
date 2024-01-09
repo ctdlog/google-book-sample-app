@@ -15,10 +15,12 @@ interface GetBooksResponse {
       title: string;
       description: string;
       authors: string[];
-      imageLinks: {
-        thumbnail: string;
-        smallThumbnail: string;
-      };
+      imageLinks:
+        | {
+            thumbnail: string;
+            smallThumbnail: string;
+          }
+        | undefined;
     };
   }>;
 }
