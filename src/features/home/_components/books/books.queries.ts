@@ -23,12 +23,6 @@ interface GetBooksResponse {
   }>;
 }
 
-export const getBooksByFilter = ({ q, startIndex, maxResults }: BookFilters): Promise<GetBooksResponse> => {
-  return fetch(
-    `https://www.googleapis.com/books/v1/volumes?q=${q}&startIndex=${startIndex}&maxResults=${maxResults}`
-  ).then((res) => res.json());
-};
-
 export const queryKeys = {
   books: {
     all: ['books'] as const,
@@ -38,20 +32,14 @@ export const queryKeys = {
   },
 };
 
+export const getBooksByFilter = ({ q, startIndex, maxResults }: BookFilters): Promise<GetBooksResponse> => {
+  return fetch(
+    `https://www.googleapis.com/books/v1/volumes?q=${q}&startIndex=${startIndex}&maxResults=${maxResults}`
+  ).then((res) => res.json());
+};
+
 export const useBooksQuery = (
-  {
-    q,
-    startIndex,
-    maxResults,
-  }: {
-    q: string;
-    startIndex: number;
-    maxResults: number;
-  } = {
-    q: 'react',
-    startIndex: 0,
-    maxResults: 40,
-  }
+  { q, startIndex, maxResults }: BookFilters = { q: 'react', startIndex: 0, maxResults: 40 }
 ) => {
   return useSuspenseInfiniteQuery({
     queryKey: queryKeys.books.list({ q, startIndex, maxResults }),
@@ -62,6 +50,6 @@ export const useBooksQuery = (
         startIndex: pageParam,
       }),
     initialPageParam: startIndex,
-    getNextPageParam: (_, allPages) => allPages.length * maxResults,
+    getNextPageParam: (_, allPages) => allPages.length * maxResults + 1,
   });
 };

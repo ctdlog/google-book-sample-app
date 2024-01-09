@@ -1,7 +1,9 @@
+import React from 'react';
+
 import { useInView } from 'react-intersection-observer';
+
 import { card, container, image, title } from './books.css';
 import { useBooksQuery } from './books.queries';
-import React from 'react';
 
 export default function Books() {
   const { ref, inView } = useInView();

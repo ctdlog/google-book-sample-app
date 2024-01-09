@@ -1,7 +1,8 @@
-import TanstackQueryProvider from './components/tanstack-query-provider';
-import HomePage from './features/home/home.page';
+import TanstackQueryProvider from '@/components/tanstack-query-provider';
 
-import './styles/reset.css';
+import HomePage from '@/features/home/home.page';
+
+import '@/styles/reset.css';
 
 function App() {
   return (

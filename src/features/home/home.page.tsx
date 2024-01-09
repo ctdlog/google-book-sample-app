@@ -1,9 +1,13 @@
 import { Suspense } from 'react';
-import Books from './_components/books';
-import { container } from './home.css';
+
 import { QueryErrorResetBoundary } from '@tanstack/react-query';
-import { ErrorBoundary } from '../../components/error-boundary';
+
+import { ErrorBoundary } from '@/components/error-boundary';
+
+import Books from './_components/books';
 import Loading from './_components/loading';
+
+import { container } from './home.css';
 
 export default function HomePage() {
   return (
@@ -16,7 +20,7 @@ export default function HomePage() {
             fallbackRender={({ error, resetErrorBoundary }) => (
               <div>
                 {error?.message ?? '에러가 발생했습니다.'}
-                <button onClick={() => resetErrorBoundary()}>Try again</button>
+                <button onClick={() => resetErrorBoundary()}>다시 시도하기</button>
               </div>
             )}
           >
