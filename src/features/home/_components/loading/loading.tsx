@@ -1,10 +1,10 @@
-import { container, spinner } from './loading.css';
+import * as stylex from '@stylexjs/stylex';
 
 export default function Loading() {
   return (
-    <div className={container}>
+    <div {...stylex.props(styles.container)}>
       <svg
-        className={spinner}
+        {...stylex.props(styles.spinner)}
         xmlns='http://www.w3.org/2000/svg'
         width='24'
         height='24'
@@ -20,3 +20,25 @@ export default function Loading() {
     </div>
   );
 }
+
+const spin = stylex.keyframes({
+  '0%': { transform: 'rotate(0deg)' },
+  '100%': { transform: 'rotate(360deg)' },
+});
+
+const styles = stylex.create({
+  container: {
+    display: 'flex',
+    flex: '1',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+    width: '100%',
+  },
+  spinner: {
+    width: '48px',
+    height: '48px',
+    color: '#475569',
+    animation: `${spin} 1s linear infinite`,
+  },
+});
